@@ -1,6 +1,5 @@
 package com.mitrais.booklibrarymanagement.controller;
 
-import com.google.gson.Gson;
 import com.mitrais.booklibrarymanagement.model.Book;
 import com.mitrais.booklibrarymanagement.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import java.util.List;
 @RequestMapping("/book")
 public class BookController {
 
-    Gson gson = new Gson();
     BookService bookService;
-    String result;
 
     @Autowired
     public void setImplBookService(BookService bookService) {
@@ -22,17 +19,15 @@ public class BookController {
     }
 
     @RequestMapping(value="/getByStatus", method=RequestMethod.GET)
-    public String displayBooksByStatus(@RequestParam("status") String status){
+    public List<Book> displayBooksByStatus(@RequestParam("status") String status){
         List<Book> books = bookService.displayBooksByStatus(status);
-        result = gson.toJson(books);
-        return result;
+        return books;
     }
 
     @RequestMapping(value="/getByTitleAndStatus", method=RequestMethod.GET)
-    public String displayBooksByTitleAndStatus(@RequestParam("title") String title,
+    public List<Book> displayBooksByTitleAndStatus(@RequestParam("title") String title,
                                                @RequestParam("status") String status){
         List<Book> books = bookService.displayBooksByTitleAndStatus(title, status);
-        result = gson.toJson(books);
-        return result;
+        return books;
     }
 }

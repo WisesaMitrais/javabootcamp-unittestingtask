@@ -19,9 +19,9 @@ public class LibraryController {
     }
 
     @RequestMapping(value="/getById", method=RequestMethod.GET)
-    public String displayShelfById(@RequestParam("id") int idShelf){
-        Shelf shelf = libraryService.displayShelfById(idShelf);
-        return shelf.toString();
+    public String displayShelfById(@RequestParam("id") int id){
+        String shelf = libraryService.displayShelfById(id);
+        return shelf;
     }
 
     @RequestMapping(value = "/addBook", method=RequestMethod.POST)
@@ -36,5 +36,10 @@ public class LibraryController {
                                       @RequestParam("shelf-id") int idShelf){
         result = libraryService.removeBookFromShelf(idBook, idShelf);
         return result;
+    }
+
+    @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
+    public String EntityNotFoundException(javax.persistence.EntityNotFoundException ex){
+        return ex.getMessage();
     }
 }

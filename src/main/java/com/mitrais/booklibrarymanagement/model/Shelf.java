@@ -1,16 +1,19 @@
 package com.mitrais.booklibrarymanagement.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @NamedQuery(name = "Shelf.setShelfCurrentCapacity",
         query = "UPDATE Shelf s SET s.current_capacity = ?1 WHERE s.shelf_id = ?2")
-public class Shelf {
+public class Shelf implements Serializable{
 
     @Id
     private int shelf_id;
+    @Column(nullable = false)
     private int max_capacity;
+    @Column(nullable = false)
     private int current_capacity;
 
     @ElementCollection

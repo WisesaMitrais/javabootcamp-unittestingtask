@@ -1,5 +1,6 @@
 package com.mitrais.booklibrarymanagement.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
@@ -11,9 +12,13 @@ public class Book {
 
     @Id
     private int id;
+    @Column(nullable = false)
     private String isbn;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String author;
+    @Column(nullable = false)
     private String status;
 
     public Book(){}

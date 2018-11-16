@@ -18,9 +18,9 @@ public class LibraryService implements IntfLibraryService {
     private BookRepository bookRepository;
 
     @Override
-    public Shelf displayShelfById(int id) {
+    public String displayShelfById(int id) {
         Shelf shelf = libraryRepository.getOne(id);
-        return shelf;
+        return shelf.toString();
     }
 
     @Override
