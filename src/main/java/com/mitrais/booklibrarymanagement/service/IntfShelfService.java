@@ -7,7 +7,7 @@ import java.util.*;
 
 public interface IntfShelfService {
 
-    List<Shelf> displayAllShelfs();
+    List<Shelf> displayAllShelves();
     Optional<Shelf> displayShelfById(int idShelf);
     int checkIsExistBook(int idBook);
     int checkIsBookAddedAtShelf(int idBook, int idShelf);

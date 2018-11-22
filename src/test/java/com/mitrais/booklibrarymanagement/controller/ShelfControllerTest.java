@@ -1,6 +1,8 @@
 package com.mitrais.booklibrarymanagement.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mitrais.booklibrarymanagement.model.Book;
+import com.mitrais.booklibrarymanagement.model.Shelf;
 import com.mitrais.booklibrarymanagement.service.ShelfService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,15 +10,16 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.*;
 
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ShelfController.class)
@@ -25,138 +28,139 @@ public class ShelfControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private ShelfService libraryService;
-
-    private RequestBuilder requestBuilder;
-    private int id, idShelf;
-    private String result;
-    private Book book;
+    private ShelfService shelfService;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
-    public void displayShelfById_idFound() {
-//        System.out.println("Test displayShelfById_idFound");
-//        // Preparation.
-//        id = 1;
-//        Mockito.when(libraryService.displayShelfById(id)).thenReturn(
-//                "Shelf{shelf_id=1, max_capacity=5, current_capacity=2, books=[1, 2]}"
-//        );
-//        // Action.
-//        result = libraryService.displayShelfById(id);
-//        // Verification.
-//        assertEquals(true, result.contains("[1, 2]"));
-    }
-
-    @Test
-    public void displayShelfById_idNotFound() {
-//        System.out.println("Tes displayShelfById_idNotFound");
-//        // Preparation.
-//        id = 3;
-//        when(libraryService.displayShelfById(id)).thenReturn("" +
-//                "Unable to find com.mitrais.booklibrarymanagement.model.Shelf with id 3"
-//        );
-//        // Action.
-//        result = libraryService.displayShelfById(id);
-//        // Verification.
-//        assertEquals(true, result.contains("Unable to find"));
-    }
-
-    @Test
-    public void displayShelfById_idNull() throws Exception {
-        System.out.println("Tes displayShelfById_idNull");
+    public void displayAllShelfs_success() throws Exception {
+        System.out.println("Test displayAllShelfs_success");
+        // Preparation.
+        Mockito.when(shelfService.displayAllShelves()).thenReturn(Arrays.asList(
+                new Shelf(1, 5, 2, Arrays.asList(1, 2)),
+                new Shelf(2, 5, 2, Arrays.asList(3, 4))
+        ));
         // Action.
-        requestBuilder = MockMvcRequestBuilders
-                .get("/getById");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/shelf/get-all")
+                .contentType(MediaType.APPLICATION_JSON);
         // Verification.
         mockMvc.perform(requestBuilder)
-                .andExpect(status().is(404));
+                .andExpect(status().is(200))
+                .andExpect(content().json("[{\"id\":1,\"maxCapacity\":5,\"curCapacity\":2," +
+                        "\"books\":[1,2]},{\"id\":2,\"maxCapacity\":5,\"curCapacity\":2,\"books\":[3,4]}]"));
     }
 
     @Test
-    public void addBookIntoShelf_allParamFound() {
-//        System.out.println("Tes addBookIntoShelf_allParamFound");
-//        // Preparation.
-//        idShelf = 1;
-//        book = new Book(6, "9999999999999", "Testing Add Book",
-//                "Testing", "SHELVED");
-//        Mockito.when(libraryService.addBookIntoShelf(book, idShelf)).thenReturn(
-//                "Adding process successfully."
-//        );
-//        // Action.
-//        result = libraryService.addBookIntoShelf(book, idShelf);
-//        // Verification.
-//        assertEquals(true, result.contains("Adding process successfully."));
-    }
-
-    @Test
-    public void addBookIntoShelf_oneParamNotFound() {
-//        System.out.println("Tes addBookIntoShelf_oneParamNotFound");
-//        // Preparation.
-//        idShelf = 3;
-//        book = new Book(6, "9999999999999", "Testing Add Book",
-//                "Testing", "SHELVED");
-//        Mockito.when(libraryService.addBookIntoShelf(book, idShelf)).thenReturn(
-//                "Adding process failed !"
-//        );
-//        // Action.
-//        result = libraryService.addBookIntoShelf(book, idShelf);
-//        // Verification.
-//        assertEquals(true, result.contains("Adding process failed !"));
-    }
-
-    @Test
-    public void addBookIntoShelf_oneParamNull() throws Exception {
-        System.out.println("Tes addBookIntoShelf_oneParamNotFound");
+    public void displayAllShelfs_noData() throws Exception {
+        System.out.println("Test displayAllShelfs_noData");
         // Preparation.
-        idShelf = 1;
+        Mockito.when(shelfService.displayAllShelves()).thenReturn(Collections.EMPTY_LIST);
         // Action.
-        requestBuilder = MockMvcRequestBuilders
-                .get("/removeBook")
-                .param("shelf-id", String.valueOf(idShelf));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/shelf/get-all")
+                .contentType(MediaType.APPLICATION_JSON);
         // Verification.
         mockMvc.perform(requestBuilder)
-                .andExpect(status().is(404));
+                .andExpect(status().is(200))
+                .andExpect(content().json("[]"));
     }
 
     @Test
-    public void removeBookFromShelf_allParamFound() {
-        System.out.println("Tes removeBookFromShelf_allParamFound");
+    public void displayShelfById_idFound() throws Exception {
+        System.out.println("Test displayShelfById_idFound");
         // Preparation.
-        idShelf = 1;
-        id = 6;
-        Mockito.when(libraryService.removeBookFromShelf(id, idShelf)).thenReturn(
+        Mockito.when(shelfService.displayShelfById(1)).thenReturn(
+                Optional.of(new Shelf(1, 5, 2, Arrays.asList(1, 2)
+                )));
+        // Action.
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/shelf/get-by-id")
+                .param("id", String.valueOf(1))
+                .contentType(MediaType.APPLICATION_JSON);
+        // Verification.
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is(200))
+                .andExpect(content().json("{\"id\":1,\"maxCapacity\":5,\"curCapacity\":2," +
+                        "\"books\":[1,2]}"));
+    }
+
+    @Test
+    public void displayShelfById_idNotFound() throws Exception {
+        System.out.println("Test displayShelfById_idNotFound");
+        // Preparation.
+        Mockito.when(shelfService.displayShelfById(6)).thenReturn(Optional.empty());
+        // Action.
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/shelf/get-by-id")
+                .param("id", String.valueOf(6))
+                .contentType(MediaType.APPLICATION_JSON);
+        // Verification.
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    public void addBookIntoShelf_success() throws Exception {
+        System.out.println("Test addBookIntoShelf_success");
+        // Preparation.
+        Book book = new Book(1, "1234567890123", "Title A", "Author A");
+        Mockito.when(shelfService.addBookIntoShelf(book, 1)).thenReturn(
+                "Adding process successfully."
+        );
+        // Action.
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/shelf/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("id-shelf", String.valueOf(1))
+                .content(objectMapper.writeValueAsString(book))
+                .characterEncoding("utf-8");
+        // Verification.
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    public void addBookIntoShelf_oneParamNotFound() throws Exception {
+        System.out.println("Test addBookIntoShelf_oneParamNotFound");
+        // Action.
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/shelf/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("id-shelf", String.valueOf(1))
+                .characterEncoding("utf-8");
+        // Verification.
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is(400));
+    }
+
+    @Test
+    public void removeBookFromShelf_success() throws Exception {
+        System.out.println("Test removeBookFromShelf_success");
+        // Preparation.
+        Mockito.when(shelfService.removeBookFromShelf(1, 1)).thenReturn(
                 "Removing process successfully."
         );
         // Action.
-        result = libraryService.removeBookFromShelf(id, idShelf);
-        // Verification.
-        assertEquals(true, result.contains("Removing process successfully."));
-    }
-
-    @Test
-    public void removeBookFromShelf_oneParamNotFound() {
-        System.out.println("Tes removeBookFromShelf_oneParamNotFound");
-        // Preparation.
-        idShelf = 1;
-        id = 8;
-        Mockito.when(libraryService.addBookIntoShelf(book, idShelf)).thenReturn(
-                "Removing process failed !"
-        );
-        // Action.
-        result = libraryService.addBookIntoShelf(book, idShelf);
-        // Verification.
-        assertEquals(true, result.contains("Removing process failed !"));
-    }
-
-    @Test
-    public void removeBookFromShelf_oneParamNull() throws Exception {
-        System.out.println("Tes removeBookFromShelf_oneParamNotFound");
-        // Preparation.
-        idShelf = 1;
-        // Action.
-        requestBuilder = MockMvcRequestBuilders
-                .get("/removeBook").param("shelf-id", String.valueOf(idShelf));
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .delete("/shelf/remove")
+                .param("id-book", String.valueOf(1))
+                .param("id-shelf", String.valueOf(1));
         // Verification.
         mockMvc.perform(requestBuilder)
-                .andExpect(status().is(404));
+                .andExpect(status().is(200))
+                .andExpect(content().string("Removing process successfully."));
+    }
+
+    @Test
+    public void removeBookFromShelf_oneParamNotFound() throws Exception {
+        System.out.println("Test removeBookFromShelf_oneParamNotFound");
+        // Action.
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .delete("/shelf/remove")
+                .param("id-shelf", String.valueOf(1));
+        // Verification.
+        mockMvc.perform(requestBuilder)
+                .andExpect(status().is(400));
     }
 }

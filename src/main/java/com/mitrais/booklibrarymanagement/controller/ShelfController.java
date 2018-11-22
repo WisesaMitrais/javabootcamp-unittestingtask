@@ -19,17 +19,20 @@ public class ShelfController {
         this.shelfService = shelfService;
     }
 
-    @RequestMapping(value="/get-all", method=RequestMethod.GET)
+    @RequestMapping(value="/get-all", method=RequestMethod.GET,
+            produces = "application/json")
     public List<Shelf> displayAllShelfs(){
-        return shelfService.displayAllShelfs();
+        return shelfService.displayAllShelves();
     }
 
-    @RequestMapping(value="/get-by-id", method=RequestMethod.GET)
+    @RequestMapping(value="/get-by-id", method=RequestMethod.GET,
+            produces = "application/json")
     public Optional<Shelf> displayShelfById(@RequestParam("id") int id){
         return shelfService.displayShelfById(id);
     }
 
-    @RequestMapping(value = "/add", method=RequestMethod.POST)
+    @RequestMapping(value = "/add", method=RequestMethod.POST,
+            produces = "text/plain", consumes = "application/json")
     public String addBookIntoShelf(@RequestBody Book book,
                                    @RequestParam("id-shelf") int id){
         return shelfService.addBookIntoShelf(book, id);

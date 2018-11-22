@@ -12,24 +12,27 @@ import java.util.*;
 @RequestMapping("/book")
 public class BookController {
 
-    BookService bookService;
+    private BookService bookService;
 
     @Autowired
     public void setImplBookService(BookService bookService) {
         this.bookService = bookService;
     }
 
-    @RequestMapping(value="/get-all", method=RequestMethod.GET)
+    @RequestMapping(value="/get-all", method=RequestMethod.GET,
+            produces = "application/json")
     public List<Book> displayAllBooks(){
         return bookService.displayAllBooks();
     }
 
-    @RequestMapping(value="/get-by-status", method=RequestMethod.GET)
+    @RequestMapping(value="/get-by-status", method=RequestMethod.GET,
+            produces = "application/json")
     public List<Book> displayBooksByStatus(@RequestParam("status") BookStatus status){
         return bookService.displayBooksByStatus(status);
     }
 
-    @RequestMapping(value="/get-by-title-and-status", method=RequestMethod.GET)
+    @RequestMapping(value="/get-by-title-and-status", method=RequestMethod.GET,
+            produces = "application/json")
     public List<Book> displayBooksByTitleAndStatus(@RequestParam("title") String title,
                                                @RequestParam("status") BookStatus status){
         return bookService.displayBooksByTitleAndStatus(title, status);

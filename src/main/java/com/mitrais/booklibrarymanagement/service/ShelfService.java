@@ -19,7 +19,7 @@ public class ShelfService implements IntfShelfService {
     private BookRepository bookRepository;
 
     @Override
-    public List<Shelf> displayAllShelfs() {
+    public List<Shelf> displayAllShelves() {
         return shelfRepository.findAll();
     }
 
@@ -54,7 +54,7 @@ public class ShelfService implements IntfShelfService {
         }
     }
 
-    private String addBookIntoShelf(Book book, int idShelf, int time){
+    public String addBookIntoShelf(Book book, int idShelf, int time){
         if(time == 1) bookRepository.save(book);
         else book.setStatus(BookStatus.NOT_SHELVED);
         Shelf shelf = shelfRepository.getOne(idShelf);
