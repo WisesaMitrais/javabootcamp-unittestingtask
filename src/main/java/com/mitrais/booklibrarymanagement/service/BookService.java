@@ -2,29 +2,34 @@ package com.mitrais.booklibrarymanagement.service;
 
 import com.mitrais.booklibrarymanagement.model.Book;
 import com.mitrais.booklibrarymanagement.repository.BookRepository;
+import com.mitrais.booklibrarymanagement.util.BookStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BookService implements IntfBookService {
 
+    private BookRepository bookRepository;
+
     @Autowired
-    BookRepository bookRepository;
-
-    List<Book> result = new ArrayList<>();
-
-    @Override
-    public List<Book> displayBooksByStatus(String status) {
-        result = bookRepository.findByStatus(status);
-        return result;
+    public void setBookRepository(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     @Override
-    public List<Book> displayBooksByTitleAndStatus(String title, String status) {
-        result = bookRepository.findByTitleAndStatus(title, status);
-        return result;
+    public List<Book> displayAllBooks() {
+        return bookRepository.findAll();
+    }
+
+    @Override
+    public List<Book> displayBooksByStatus(BookStatus status) {
+        return bookRepository.findByStatus(status);
+    }
+
+    @Override
+    public List<Book> displayBooksByTitleAndStatus(String title, BookStatus status) {
+        return bookRepository.findByTitleAndStatus(title, status);
     }
 }

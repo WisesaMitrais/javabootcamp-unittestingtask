@@ -1,13 +1,10 @@
 package com.mitrais.booklibrarymanagement.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import com.mitrais.booklibrarymanagement.util.BookStatus;
+
+import javax.persistence.*;
 
 @Entity
-@NamedQuery(name = "Book.findByTitleAndStatus",
-        query = "SELECT b FROM Book b WHERE b.title = ?1 AND b.status = ?2")
 public class Book {
 
     @Id
@@ -19,16 +16,17 @@ public class Book {
     @Column(nullable = false)
     private String author;
     @Column(nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BookStatus status;
 
     public Book(){}
 
-    public Book(int id, String isbn, String title, String author, String status) {
+    public Book(int id, String isbn, String title, String author) {
         this.id = id;
         this.isbn = isbn;
         this.title = title;
         this.author = author;
-        this.status = status;
+        this.status = BookStatus.NOT_SHELVED;
     }
 
     public int getId() {
@@ -63,11 +61,11 @@ public class Book {
         this.author = author;
     }
 
-    public String getStatus() {
+    public BookStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(BookStatus status) {
         this.status = status;
     }
 

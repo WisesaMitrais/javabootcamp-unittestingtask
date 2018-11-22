@@ -1,11 +1,13 @@
 package com.mitrais.booklibrarymanagement.service;
 
 import com.mitrais.booklibrarymanagement.model.Book;
+import com.mitrais.booklibrarymanagement.util.BookStatus;
 
-import java.util.List;
+import java.util.*;
 
 public interface IntfBookService {
 
-    List<Book> displayBooksByStatus(String status);
-    List<Book> displayBooksByTitleAndStatus(String title, String status);
+    List<Book> displayAllBooks();
+    List<Book> displayBooksByStatus(BookStatus status);
+    List<Book> displayBooksByTitleAndStatus(String title, BookStatus status);
 }

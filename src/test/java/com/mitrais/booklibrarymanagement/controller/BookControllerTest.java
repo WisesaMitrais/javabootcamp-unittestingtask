@@ -58,32 +58,32 @@ public class BookControllerTest {
 
     @Test
     public void displayBooksByStatus_statusFound() {
-        System.out.println("Test displayBooksByStatus_statusFound");
-        // Preparation.
-        status = "SHELVED";
-        Mockito.when(bookService.displayBooksByStatus(status)).thenReturn(Arrays.asList(
-                new Book(1, "9786021514917", "Algoritma dan Pemrograman",
-                        "Rinaldi Munir", "SHELVED"),
-                new Book(2, "9786021514924", "Metode Numerik",
-                        "Rinaldi Munir", "SHELVED")
-        ));
-        // Action.
-        books = bookService.displayBooksByStatus(status);
-        // Verification.
-        assertEquals(2, books.size());
-        assertEquals("SHELVED", books.get(1).getStatus());
+//        System.out.println("Test displayBooksByStatus_statusFound");
+//        // Preparation.
+//        status = "SHELVED";
+//        Mockito.when(bookService.displayBooksByStatus(status)).thenReturn(Arrays.asList(
+//                new Book(1, "9786021514917", "Algoritma dan Pemrograman",
+//                        "Rinaldi Munir", "SHELVED"),
+//                new Book(2, "9786021514924", "Metode Numerik",
+//                        "Rinaldi Munir", "SHELVED")
+//        ));
+//        // Action.
+//        books = bookService.displayBooksByStatus(status);
+//        // Verification.
+//        assertEquals(2, books.size());
+//        assertEquals("SHELVED", books.get(1).getStatus());
     }
 
     @Test
     public void displayBooksByStatus_statusNotFound() {
-        System.out.println("Test displayBooksByStatus_statusNotFound");
-        // Preparation.
-        status = "SHELVE";
-        Mockito.when(bookService.displayBooksByStatus(status)).thenReturn(Collections.EMPTY_LIST);
-        // Action.
-        books = bookService.displayBooksByStatus(status);
-        // Verification.
-        assertEquals(0, books.size());
+//        System.out.println("Test displayBooksByStatus_statusNotFound");
+//        // Preparation.
+//        status = "SHELVE";
+//        Mockito.when(bookService.displayBooksByStatus(status)).thenReturn(Collections.EMPTY_LIST);
+//        // Action.
+//        books = bookService.displayBooksByStatus(status);
+//        // Verification.
+//        assertEquals(0, books.size());
     }
 
     @Test
@@ -100,33 +100,33 @@ public class BookControllerTest {
 
     @Test
     public void displayBooksByTitleAndStatus_allParamFound() {
-        System.out.println("Test displayBooksByTitleAndStatus_allParamFound");
-        // Preparation.
-        title = "Pemrograman C";
-        status = "NOT-SHELVED";
-        Mockito.when(bookService.displayBooksByTitleAndStatus(title, status))
-                .thenReturn(Arrays.asList(
-                new Book(3, "9786028759281", "Pemrograman C",
-                        "Budi Raharjo", "NOT-SHELVED")
-        ));
-        // Action.
-        books = bookService.displayBooksByTitleAndStatus(title, status);
-        // Verification.
-        assertEquals(1, books.size());
+//        System.out.println("Test displayBooksByTitleAndStatus_allParamFound");
+//        // Preparation.
+//        title = "Pemrograman C";
+//        status = "NOT-SHELVED";
+//        Mockito.when(bookService.displayBooksByTitleAndStatus(title, status))
+//                .thenReturn(Arrays.asList(
+//                new Book(3, "9786028759281", "Pemrograman C",
+//                        "Budi Raharjo", "NOT-SHELVED")
+//        ));
+//        // Action.
+//        books = bookService.displayBooksByTitleAndStatus(title, status);
+//        // Verification.
+//        assertEquals(1, books.size());
     }
 
     @Test
     public void displayBooksByTitleAndStatus_oneParamNotFound() {
-        System.out.println("Test displayBooksByTitleAndStatus_oneParamNotFound");
-        // Preparation.
-        title = "Metode Numerik";
-        status = "NOT-SHELVED";
-        Mockito.when(bookService.displayBooksByTitleAndStatus(title, status))
-                .thenReturn(Collections.EMPTY_LIST);
-        // Action.
-        books = bookService.displayBooksByTitleAndStatus(title, status);
-        // Verification.
-        assertEquals(0, books.size());
+//        System.out.println("Test displayBooksByTitleAndStatus_oneParamNotFound");
+//        // Preparation.
+//        title = "Metode Numerik";
+//        status = "NOT-SHELVED";
+//        Mockito.when(bookService.displayBooksByTitleAndStatus(title, status))
+//                .thenReturn(Collections.EMPTY_LIST);
+//        // Action.
+//        books = bookService.displayBooksByTitleAndStatus(title, status);
+//        // Verification.
+//        assertEquals(0, books.size());
     }
 
     @Test

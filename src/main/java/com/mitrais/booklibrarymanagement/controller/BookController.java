@@ -2,10 +2,11 @@ package com.mitrais.booklibrarymanagement.controller;
 
 import com.mitrais.booklibrarymanagement.model.Book;
 import com.mitrais.booklibrarymanagement.service.BookService;
+import com.mitrais.booklibrarymanagement.util.BookStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/book")
@@ -18,16 +19,19 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @RequestMapping(value="/getByStatus", method=RequestMethod.GET)
-    public List<Book> displayBooksByStatus(@RequestParam("status") String status){
-        List<Book> books = bookService.displayBooksByStatus(status);
-        return books;
+    @RequestMapping(value="/get-all", method=RequestMethod.GET)
+    public List<Book> displayAllBooks(){
+        return bookService.displayAllBooks();
     }
 
-    @RequestMapping(value="/getByTitleAndStatus", method=RequestMethod.GET)
+    @RequestMapping(value="/get-by-status", method=RequestMethod.GET)
+    public List<Book> displayBooksByStatus(@RequestParam("status") BookStatus status){
+        return bookService.displayBooksByStatus(status);
+    }
+
+    @RequestMapping(value="/get-by-title-and-status", method=RequestMethod.GET)
     public List<Book> displayBooksByTitleAndStatus(@RequestParam("title") String title,
-                                               @RequestParam("status") String status){
-        List<Book> books = bookService.displayBooksByTitleAndStatus(title, status);
-        return books;
+                                               @RequestParam("status") BookStatus status){
+        return bookService.displayBooksByTitleAndStatus(title, status);
     }
 }
